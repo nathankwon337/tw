@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>TaiwanTrip 2026｜가오슝 여행 대시보드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="sortable.min.js?v=2"></script>
+<script src="xlsx.full.min.js?v=1"></script>
+<style>
+:root{
+  --ink:#182233; --ink-2:#233047; --paper:#FBF8F1; --paper-2:#F2EDE1; --line:#DED5C0;
+  --gold:#C99A3E; --gold-deep:#9C7325; --moss:#4B6650; --moss-2:#6C8A6F; --brick:#B0503A;
+  --text:#1E2430; --muted:#6B7280; --white:#FFFFFF;
+}
+*{box-sizing:border-box;}
+input, select, textarea{min-width:0; width:100%; box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--paper); color:var(--text); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; padding-bottom:84px; min-height:100vh;}
+.font-display{font-family:'Fraunces',serif;}
+.font-mono{font-family:'IBM Plex Mono',monospace;}
+
+.topbar{position:sticky; top:0; z-index:40; background:var(--ink); color:var(--paper); padding:14px 18px 12px; box-shadow:0 2px 10px rgba(0,0,0,.18);}
+.topbar .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); opacity:.9;}
+.topbar h1{font-family:'Fraunces',serif; font-weight:600; font-size:20px; margin:2px 0 0; letter-spacing:.01em;}
+
+.bottomnav{position:fixed; left:0; right:0; bottom:0; z-index:50; background:var(--ink); border-top:1px solid rgba(255,255,255,.08); display:flex; padding-bottom:env(safe-area-inset-bottom);}
+.navbtn{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:9px 2px 8px; background:none; border:none; cursor:pointer; color:#8B93A6; font-family:'Inter',sans-serif; font-size:10.5px; font-weight:600; transition:color .15s;}
+.navbtn svg{width:20px;height:20px; stroke:#8B93A6; transition:stroke .15s;}
+.navbtn.active{color:var(--gold);}
+.navbtn.active svg{stroke:var(--gold);}
+
+.tab{display:none; padding:16px 14px 10px; max-width:640px; margin:0 auto;}
+.tab.active{display:block; animation:fadein .25s ease;}
+@keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+.card{background:var(--white); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; box-shadow:0 1px 2px rgba(24,34,51,.04);}
+.section-label{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-deep); font-weight:600; display:flex; align-items:center; gap:8px; margin-bottom:10px;}
+.section-label::after{content:''; flex:1; height:1px; background:var(--line);}
+
+.progress-wrap{background:var(--paper-2); border-radius:999px; height:10px; overflow:hidden;}
+.progress-bar{height:100%; background:linear-gradient(90deg,var(--moss),var(--gold)); border-radius:999px; transition:width .6s ease;}
+
+.routeline-wrap{position:relative;}
+.routeline-scroll{overflow-x:auto; padding:6px 2px 10px; -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none;}
+.routeline-scroll::-webkit-scrollbar{display:none; height:0;}
+.routeline-fade{position:absolute; top:0; right:0; bottom:10px; width:28px; background:linear-gradient(to right, rgba(255,255,255,0), var(--white)); pointer-events:none;}
+
+.quicklink{display:flex; align-items:center; gap:10px; background:var(--paper-2); border:1px solid var(--line); border-radius:12px; padding:12px; font-size:13px; font-weight:600; color:var(--ink-2); text-decoration:none; cursor:pointer;}
+.quicklink svg{width:18px;height:18px; stroke:var(--brick); flex-shrink:0;}
+
+.daychip{flex-shrink:0; padding:9px 13px; border-radius:11px; border:1px solid var(--line); background:var(--white); cursor:pointer; text-align:center; min-width:58px;}
+.daychip .d{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); font-weight:600;}
+.daychip .c{font-size:12px; font-weight:700; margin-top:2px;}
+.daychip.active{background:var(--ink); border-color:var(--ink);}
+.daychip.active .d{color:var(--gold);}
+.daychip.active .c{color:var(--paper);}
+.daychip.today{box-shadow:0 0 0 2px var(--gold);}
+
+.tl-period{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--moss); font-weight:700; margin:18px 0 8px 2px; display:flex; align-items:center; gap:8px;}
+.tl-period::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--moss);}
+
+.tl-card{background:var(--white); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:12px 13px; margin-bottom:9px; cursor:pointer; position:relative;}
+.tl-card.tag-이동{border-left-color:#6C8A6F;}
+.tl-card.tag-관광{border-left-color:#C99A3E;}
+.tl-card.tag-식사{border-left-color:#B0503A;}
+.tl-card.tag-숙소{border-left-color:#5B6B8C;}
+.tl-card.tag-쇼핑{border-left-color:#8E6FA8;}
+.tl-card .tl-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+.tl-card .tl-time{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); font-weight:600;}
+.tl-card .tl-title{font-weight:700; font-size:14.5px; margin-top:2px; line-height:1.35;}
+.tl-card .tl-place{font-size:12px; color:var(--muted); margin-top:3px;}
+.tl-card .tl-tip{font-size:12px; color:var(--ink-2); margin-top:7px; background:var(--paper-2); border-radius:8px; padding:8px 9px; line-height:1.5;}
+.tl-tag-pill{font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px; background:var(--paper-2); color:var(--ink-2); white-space:nowrap;}
+.status-pill{font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; cursor:pointer; white-space:nowrap; border:1px solid var(--line);}
+.status-pill.status-none{background:var(--paper-2); color:var(--muted);}
+.status-pill.status-done{background:#E4EEE4; color:var(--moss); border-color:#C8DEC9;}
+.status-pill.status-pass{background:#F2E7DC; color:var(--brick); border-color:#E9D2C0;}
+.tl-card.status-done{opacity:.72;}
+.tl-card.status-done .tl-title{text-decoration:line-through; text-decoration-color:var(--moss);}
+.tl-card.status-pass{opacity:.55; border-style:dashed;}
+.tl-card.status-pass .tl-title{text-decoration:line-through; text-decoration-color:var(--brick);}
+.tl-map-btn{width:30px;height:30px; border-radius:50%; border:1px solid var(--line); background:var(--paper-2); display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer;}
+.tl-map-btn svg{width:15px;height:15px; stroke:var(--brick);}
+.drag-handle{color:var(--muted); font-size:14px; letter-spacing:1px; margin-right:4px; user-select:none; cursor:grab; padding:2px 4px;}
+.drag-handle:active{cursor:grabbing;}
+
+.pool-zone{background:var(--paper-2); border:1.5px dashed var(--line); border-radius:12px; padding:12px; min-height:60px;}
+.pool-card{background:var(--white); border:1px solid var(--line); border-radius:9px; padding:10px 11px; margin-bottom:8px; font-size:12.5px;}
+.pool-card b{display:block; font-size:13.5px; margin-bottom:2px;}
+.sortable-ghost{opacity:.35;}
+.sortable-drag{box-shadow:0 6px 18px rgba(0,0,0,.15);}
+
+.chk-cat{margin-bottom:16px;}
+.chk-cat-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+.chk-cat-head h3{font-family:'Fraunces',serif; font-size:15px; font-weight:600; margin:0;}
+.chk-progress{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);}
+.chk-item{display:flex; align-items:center; gap:9px; padding:9px 4px; border-bottom:1px solid var(--paper-2);}
+.chk-item-wrap{border-bottom:1px solid var(--paper-2);}
+.chk-item-wrap .chk-item{border-bottom:none; padding-bottom:2px;}
+.chk-item-wrap:last-child{border-bottom:none;}
+.chk-note-input{width:100%; border:none; border-bottom:1px dashed var(--line); background:transparent; font-size:11.5px; color:var(--muted); padding:0 4px 8px 34px; margin-top:-2px;}
+.chk-note-input:focus{outline:none; border-bottom-color:var(--gold-deep);}
+
+.lang-toggle{display:flex; gap:8px; margin-bottom:16px;}
+.lang-btn{flex:1; padding:11px; border-radius:11px; border:1px solid var(--line); background:var(--white); font-weight:700; font-size:13.5px; cursor:pointer; color:var(--ink-2);}
+.lang-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.phrase-row{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:11px 4px; border-bottom:1px solid var(--paper-2); cursor:pointer;}
+.phrase-row:last-child{border-bottom:none;}
+.phrase-kr{font-size:13.5px; font-weight:600; color:var(--ink-2);}
+.phrase-foreign{font-size:12px; color:var(--muted); margin-top:2px;}
+.phrase-arrow{font-size:15px; flex-shrink:0; opacity:.6;}
+
+.jump-card{display:flex; align-items:center; gap:10px; padding:12px 14px;}
+.jump-label{font-size:12px; color:var(--muted); white-space:nowrap; flex-shrink:0; font-weight:600;}
+.jump-select{flex:1; border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:13px; background:var(--paper-2); color:var(--ink-2);}
+.qty-btn{width:32px; height:32px; border-radius:9px; border:1px solid var(--line); background:var(--paper-2); font-size:17px; font-weight:700; color:var(--ink-2); cursor:pointer; flex-shrink:0;}
+.chk-box{width:21px;height:21px; border-radius:6px; border:2px solid var(--line); flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.15s;}
+.chk-box.on{background:var(--moss); border-color:var(--moss);}
+.chk-box svg{width:13px;height:13px; stroke:white; opacity:0;}
+.chk-box.on svg{opacity:1;}
+.chk-label{font-size:14px; flex:1; cursor:default;}
+.chk-label.done{text-decoration:line-through; color:var(--muted); opacity:.65;}
+.icon-btn{cursor:pointer; font-size:13px; padding:2px 3px; color:var(--muted);}
+.icon-btn.danger{color:var(--brick);}
+
+textarea#memoInput{width:100%; border:1px solid var(--line); border-radius:10px; padding:11px 12px; font-family:'Inter',sans-serif; font-size:14px; resize:none; min-height:60px; background:var(--paper-2);}
+.memo-item{background:var(--paper-2); border-radius:10px; padding:10px 12px; margin-bottom:8px; font-size:13.5px; position:relative;}
+.memo-item .ts{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:3px;}
+.memo-del{position:absolute; top:8px; right:10px; color:var(--brick); font-size:16px; cursor:pointer; opacity:.55;}
+.shop-city{font-weight:700; font-size:13px; margin:14px 0 6px; color:var(--ink-2);}
+.shop-country-tag{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--gold-deep); background:#FBF1DD; padding:2px 7px; border-radius:6px; margin-right:6px;}
+
+.btn-primary{background:var(--ink); color:var(--paper); border:none; border-radius:10px; padding:10px 16px; font-weight:700; font-size:13px; cursor:pointer;}
+.btn-ghost{background:var(--paper-2); color:var(--ink-2); border:1px solid var(--line); border-radius:9px; padding:9px 13px; font-weight:700; font-size:12.5px; cursor:pointer;}
+.btn-danger{background:#F6E3DC; color:var(--brick); border:none; border-radius:10px; padding:10px 14px; font-weight:700; font-size:12.5px; cursor:pointer;}
+.btn-cancel{width:100%; background:none; border:none; color:var(--muted); font-size:12.5px; padding:12px 0 0; cursor:pointer;}
+.badge{display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px;}
+.badge-done{background:#E4EEE4; color:var(--moss);}
+.badge-pending{background:#F6E8DC; color:var(--brick);}
+
+.modalBg{display:none; position:fixed; inset:0; background:rgba(24,34,51,.55); z-index:100; align-items:flex-end; justify-content:center;}
+.modalSheet{background:var(--paper); width:100%; max-width:640px; border-radius:18px 18px 0 0; padding:20px 18px calc(20px + env(safe-area-inset-bottom)); max-height:88vh; overflow-y:auto;}
+#formModalContent label{display:block; font-size:11.5px; font-weight:700; color:var(--ink-2); margin:10px 0 4px;}
+#formModalContent input, #formModalContent select, #formModalContent textarea{width:100%; border:1px solid var(--line); border-radius:9px; padding:8px 10px; font-size:13.5px; font-family:'Inter',sans-serif; background:var(--paper-2);}
+#formModalContent textarea{min-height:56px; resize:vertical;}
+.formGrid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+/* 영수증 촬영/크롭/스캔 UI (가계부 OCR) */
+.rc-capture-box{border:2px dashed var(--line); border-radius:10px; padding:14px; text-align:center;}
+.rc-crop-wrap{position:relative; display:inline-block; max-width:100%; touch-action:none; user-select:none;}
+.rc-crop-wrap img{display:block; max-width:100%; border-radius:8px;}
+.rc-crop-box{position:absolute; border:2px solid var(--brick); box-shadow:0 0 0 2000px rgba(0,0,0,0.45); cursor:move;}
+.rc-crop-handle{position:absolute; width:22px; height:22px; background:var(--brick); border-radius:50%; right:-11px; bottom:-11px; cursor:nwse-resize; border:2px solid #fff;}
+.rc-scan-wrap{position:relative; display:inline-block; max-width:100%;}
+.rc-scan-wrap img{display:block; max-width:100%; border-radius:8px;}
+.rc-scan-line{position:absolute; left:0; right:0; top:0; height:3px; background:linear-gradient(90deg, transparent, var(--moss), transparent); box-shadow:0 0 12px 2px var(--moss); animation:rc-scan-move 1.6s linear infinite;}
+.rc-scan-wrap.rc-scanning::after{content:''; position:absolute; inset:0; background:repeating-linear-gradient(to bottom, rgba(76,107,79,0.08) 0px, rgba(76,107,79,0.08) 2px, transparent 2px, transparent 4px); animation:rc-scan-flicker 1.6s linear infinite;}
+@keyframes rc-scan-move{0%{top:0%;} 100%{top:98%;}}
+@keyframes rc-scan-flicker{0%,100%{opacity:0.6;} 50%{opacity:0.9;}}
+@media (prefers-reduced-motion: reduce){ .rc-scan-line, .rc-scan-wrap.rc-scanning::after{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="eyebrow">TAIWANTRIP 2026 · 가오슝 2인 여정</div>
+  <h1 id="topTitle">종합 대시보드</h1>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div class="tab active" id="tab-dashboard">
+  <div class="card">
+    <div class="section-label">D-DAY & 진행률</div>
+    <div style="display:flex; align-items:baseline; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
+      <div class="font-display" id="ddayText" style="font-size:34px; font-weight:700; color:var(--ink); white-space:nowrap; flex-shrink:0;">D-9</div>
+      <div style="font-size:12.5px; color:var(--muted);" id="ddaySub">2026.07.29 (수) 출발까지</div>
+    </div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%;"></div></div>
+    <div style="display:flex; justify-content:space-between; margin-top:6px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted);">
+      <span>9/17 가오슝 출발</span><span id="progressLabel">0 / 3 일차</span><span>9/19 인천 도착</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">여정 노선도</div>
+    <div class="routeline-wrap">
+      <div class="routeline-scroll"><svg id="routeSvg" height="108"></svg></div>
+      <div class="routeline-fade"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">오늘의 숙소 스냅샷</div>
+    <div id="stayCard"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">긴급 링크 바로가기</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:9px;">
+      <div class="quicklink" onclick="openAttachQuickModal('passport','여권 사본')">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>여권 사본
+      </div>
+      <div class="quicklink" onclick="openAttachQuickModal('insurance','여행자보험')">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"/></svg>여행자보험
+      </div>
+      <div class="quicklink" onclick="openAttachQuickModal('medicine','의약품 정보')">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 20.5L4 14a4.95 4.95 0 117-7l6.5 6.5a4.95 4.95 0 11-7 7z"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.5 8.5l7 7"/></svg>의약품 정보
+      </div>
+      <div class="quicklink" onclick="openModal('긴급 연락처','🇹🇼 대만 통합 응급 110(경찰) · 119(소방·구급)\n주타이베이 대한민국 대표부 긴급전화(근무시간 외): +886-912-069-230\n대표전화(근무시간 내, 여권·사증 등 일반 문의): +886-2-2758-8320~5')">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h2.5a1 1 0 011 .8l1 4a1 1 0 01-.3 1L7.5 10a12 12 0 006.5 6.5l1.2-1.7a1 1 0 011-.3l4 1a1 1 0 01.8 1V19a2 2 0 01-2 2h-1C10 21 3 14 3 6V5z"/></svg>긴급 연락처
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">예산 현황</div>
+    <div style="text-align:center;">
+      <div class="font-mono" style="font-size:11px; color:var(--muted);">실제 사용비용 합계 (환산)</div>
+      <div class="font-display" id="budgetAct" style="font-size:28px; font-weight:700; color:var(--brick);">0원</div>
+      <div class="font-mono" id="budgetBreakdown" style="font-size:11.5px; color:var(--ink-2); margin-top:4px;">아직 등록된 지출이 없습니다</div>
+    </div>
+    <div id="budgetCategoryBreakdown" style="margin-top:8px;"></div>
+    <div style="margin-top:8px;"><span onclick="openExpenseListModal()" style="font-size:11.5px; color:var(--brick); font-weight:700; cursor:pointer;">📋 전체 지출 목록 보기</span></div>
+    <div id="unassignedExpenseZone"></div>
+    <div style="font-size:11px; color:var(--muted); margin-top:10px;">환산 기준: 1 TWD ≈ 43원 · 미분류 지출 포함 전체 합산 (타임라인 카드의 "지출 추가"로 등록한 값을 환산해 합산)</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">동행 동기화 (구글시트 연동)</div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn-primary" style="background:var(--moss);" onclick="syncUpload(event)">☁️ 지금 업로드</button>
+      <button class="btn-primary" style="background:var(--ink-2);" onclick="syncDownload()">⬇️ 지금 불러오기</button>
+    </div>
+    <div id="syncStatus" style="font-size:11px; color:var(--muted); margin-top:8px;"></div>
+    <div style="margin-top:6px;"><span onclick="openSyncHelp()" style="font-size:11.5px; color:var(--brick); font-weight:700; cursor:pointer;">📄 연동 설정 방법 보기</span></div>
+    <div style="font-size:11px; color:var(--muted); margin-top:8px;">💡 인터넷이 안 되는 곳에서도 이 앱은 기기에 그대로 저장되며 계속 사용 가능합니다. 와이파이가 연결되면 "지금 업로드"로 서버에 올려주세요.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">환율 메모</div>
+    <div style="font-size:12.5px; color:var(--ink-2); line-height:1.7;" class="font-mono">
+      1 TWD(대만달러) ≈ 43원<br>
+      <span style="color:var(--muted);">※ 계산 편의를 위한 기준 환율이며 실제 결제 시 환율과 다를 수 있습니다.</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= TIMELINE ================= -->
+<div class="tab" id="tab-timeline">
+  <div style="display:flex; gap:8px; overflow-x:auto; padding:2px 2px 12px; -webkit-overflow-scrolling:touch;" id="dayChips"></div>
+  <div id="timelineBody"></div>
+  <div style="margin-top:20px;">
+    <div class="section-label">추천 스팟 풀</div>
+    <div class="pool-zone" id="poolZone"></div>
+  </div>
+</div>
+
+<!-- ================= CHECKLIST ================= -->
+<div class="tab" id="tab-checklist">
+  <div class="card" style="margin-bottom:16px;">
+    <div class="section-label">전체 준비 현황</div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div class="font-display" id="chkOverallPct" style="font-size:30px; font-weight:700;">0%</div>
+      <div class="progress-wrap" style="flex:1;"><div class="progress-bar" id="chkOverallBar" style="width:0%;"></div></div>
+    </div>
+    <div style="font-size:11.5px; color:var(--muted); margin-top:6px;">항목을 자유롭게 추가·수정·삭제할 수 있습니다 (이 기기에 저장됨, 동기화 카드로 동행과 공유)</div>
+  </div>
+  <div id="checklistBody"></div>
+</div>
+
+<!-- ================= 여행 회화 ================= -->
+<div class="tab" id="tab-phrasebook">
+  <div id="phraseBody"></div>
+</div>
+
+<!-- ================= 식당 도우미 ================= -->
+<div class="tab" id="tab-restaurant">
+  <div id="restaurantBody"></div>
+</div>
+
+<!-- ================= MEMO & SHOPPING ================= -->
+<div class="tab" id="tab-memo">
+  <div class="card">
+    <div class="section-label">현지 퀵 메모</div>
+    <textarea id="memoInput" placeholder="가이드 팁, 주차장 층수, 즉석 가계부 등을 적어두세요…"></textarea>
+    <div style="text-align:right; margin-top:8px;"><button class="btn-primary" onclick="addMemo()">메모 저장</button></div>
+    <div id="memoList" style="margin-top:12px;"></div>
+  </div>
+  <div class="card">
+    <div class="section-label">쇼핑 리스트 북마크</div>
+    <div id="shoppingBody"></div>
+  </div>
+</div>
+
+<div class="bottomnav">
+  <button class="navbtn active" data-tab="dashboard" onclick="switchTab('dashboard')">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>대시보드
+  </button>
+  <button class="navbtn" data-tab="timeline" onclick="switchTab('timeline')">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>타임라인
+  </button>
+  <button class="navbtn" data-tab="checklist" onclick="switchTab('checklist')">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>체크리스트
+  </button>
+  <button class="navbtn" data-tab="phrasebook" onclick="switchTab('phrasebook')">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>여행회화
+  </button>
+  <button class="navbtn" data-tab="restaurant" onclick="switchTab('restaurant')">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3v6m-4-6v6m8-6v6M7 9h8m-8 0v12m8-12v12M4 21h16"/></svg>식당
+  </button>
+  <button class="navbtn" data-tab="memo" onclick="switchTab('memo')">
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.4-9.4a2 2 0 112.8 2.8L11 17l-4 1 1-4 9.6-9.4z"/></svg>메모/쇼핑
+  </button>
+</div>
+
+<!-- 안내용 정보 모달 -->
+<div id="modalBg" class="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modalSheet">
+    <div class="font-display" id="modalTitle" style="font-size:18px; font-weight:700; margin-bottom:10px;"></div>
+    <div id="modalBody" style="font-size:13.5px; line-height:1.7; white-space:pre-line; color:var(--ink-2);"></div>
+    <button class="btn-primary" style="width:100%; margin-top:16px;" onclick="closeModal()">닫기</button>
+  </div>
+</div>
+
+<!-- 편집용 폼 모달 -->
+<div id="formModalBg" class="modalBg" onclick="if(event.target===this)closeFormModal()">
+  <div class="modalSheet"><div id="formModalContent"></div></div>
+</div>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>
