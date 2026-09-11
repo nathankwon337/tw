@@ -808,7 +808,7 @@ const RESTAURANT_ETC = {
 /* =====================================================================
    STATE
 ===================================================================== */
-const STATE_KEY = 'taiwan2026_state_v1';
+const STATE_KEY = 'taiwan2026_state_v2';
 function uid(p){ return p+'_'+Math.random().toString(36).slice(2,9); }
 function esc(s){ return (s===null||s===undefined?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function loadJSON(key, fallback){ try{ const v = JSON.parse(localStorage.getItem(key)); return v==null? fallback : v; }catch(e){ return fallback; } }
