@@ -28,48 +28,48 @@ function todayInTaipei(){
 ===================================================================== */
 const SEED_DAYS = [
 {date:'2026-09-17', label:'9/17(목)', city:'가오슝', country:'대만', stay:'그리트 인(Greet Inn)', checkin:true, blocks:[
-  {period:'오후', tag:'이동', title:'인천→가오슝 도착 · 공항→호텔(미려도역) 이동', time:'13:05–17:00', place:'가오슝 국제공항 → 그리트 인', tip:'입국심사·수하물 수령 후 MRT 또는 우버로 미려도역 인근 호텔 이동, 체크인. 4인 이동+짐 있어 우버 추천.', map:'Greet Inn Kaohsiung'},
-  {period:'저녁', tag:'식사', title:'★ 향원우육면(港園牛肉麵) 저녁', time:'18:00', place:'항원우육면', tip:'우육 탕면·비빔면 + 오이무침. 외부 음료·주류 반입 가능해 편의점 맥주 지참 추천.', map:'港園牛肉麵 高雄'},
-  {period:'저녁', tag:'관광', title:'보얼예술특구 산책·야경 & 써니힐 펑리수', time:'19:30', place:'보얼예술특구', tip:'창고 개조 전시거리 야경 산책 후, 써니힐 매장에서 무료 차&펑리수 시식하고 선물용 구매.', map:'Pier-2 Art Center Kaohsiung'},
-  {period:'밤', tag:'쇼핑', title:'리우허(六合) 야시장', time:'21:00', place:'류허 야시장', tip:'호텔 도보 5분. 먹거리·맥주 포장해서 호텔로 복귀.', map:'Liuhe Night Market Kaohsiung'},
+  {period:'오후', tag:'이동', title:'인천→가오슝 도착 · 공항→호텔(미려도역) 이동', time:'13:05–17:00', place:'가오슝 국제공항 → 그리트 인', tip:'입국심사·수하물 수령 후 MRT 또는 우버로 미려도역 인근 호텔 이동, 체크인. 4인 이동+짐 있어 우버 추천.', map:'Greet Inn Kaohsiung', geo:[22.6274,120.2955]},
+  {period:'저녁', tag:'식사', title:'★ 향원우육면(港園牛肉麵) 저녁', time:'18:00', place:'항원우육면', tip:'우육 탕면·비빔면 + 오이무침. 외부 음료·주류 반입 가능해 편의점 맥주 지참 추천.', map:'港園牛肉麵 高雄', geo:[22.6222,120.2822]},
+  {period:'저녁', tag:'관광', title:'보얼예술특구 산책·야경 & 써니힐 펑리수', time:'19:30', place:'보얼예술특구', tip:'창고 개조 전시거리 야경 산책 후, 써니힐 매장에서 무료 차&펑리수 시식하고 선물용 구매.', map:'Pier-2 Art Center Kaohsiung', geo:[22.6199,120.283]},
+  {period:'밤', tag:'쇼핑', title:'리우허(六合) 야시장', time:'21:00', place:'류허 야시장', tip:'호텔 도보 5분. 먹거리·맥주 포장해서 호텔로 복귀.', map:'Liuhe Night Market Kaohsiung', geo:[22.6324,120.301]},
   {period:'밤', tag:'식사', title:'호텔 라운지 야식 & 담소', time:'22:00', place:'그리트 인 조식당 라운지', tip:'무료 커피·음료·다과가 상시 개방된 라운지에서 야시장 먹거리 나눠 먹기.', map:''},
 ]},
 {date:'2026-09-18', label:'9/18(금)', city:'가오슝', country:'대만', stay:'그리트 인(Greet Inn)', blocks:[
   {period:'아침', tag:'식사', title:'조식 (이른 아침)', time:'07:30', place:'숙소', tip:'부모님 기상 시간에 맞춰 이른 식사.', map:''},
-  {period:'오전', tag:'관광', title:'연지담(蓮池潭) 용호탑', time:'09:00', place:'연지담', tip:'우버로 이동(약 25분). 용 입으로 들어가 호랑이 입으로 나오기.', map:'Lotus Pond Dragon Tiger Pagodas Kaohsiung'},
-  {period:'오후', tag:'식사', title:'★ 딘타이펑(한신백화점 지하) 점심', time:'11:30', place:'한신백화점 딘타이펑', tip:'오픈 시간 맞춰 방문 추천. 샤오롱바오·갈비볶음밥·탄탄면.', map:'汉神百货 鼎泰丰 高雄'},
-  {period:'오후', tag:'식사', title:'구산 페리터미널 이동 · 하이지빙 망고빙수', time:'13:30', place:'渡船頭海之冰', tip:'페리 승선 전 망고빙수로 더위 식히기.', map:'渡船頭海之冰 高雄'},
+  {period:'오전', tag:'관광', title:'연지담(蓮池潭) 용호탑', time:'09:00', place:'연지담', tip:'우버로 이동(약 25분). 용 입으로 들어가 호랑이 입으로 나오기.', map:'Lotus Pond Dragon Tiger Pagodas Kaohsiung', geo:[22.6796,120.2936]},
+  {period:'오후', tag:'식사', title:'★ 딘타이펑(한신백화점 지하) 점심', time:'11:30', place:'한신백화점 딘타이펑', tip:'오픈 시간 맞춰 방문 추천. 샤오롱바오·갈비볶음밥·탄탄면.', map:'汉神百货 鼎泰丰 高雄', geo:[22.6221,120.2937]},
+  {period:'오후', tag:'식사', title:'구산 페리터미널 이동 · 하이지빙 망고빙수', time:'13:30', place:'渡船頭海之冰', tip:'페리 승선 전 망고빙수로 더위 식히기.', map:'渡船頭海之冰 高雄', geo:[22.6229,120.2679]},
   {period:'오후', tag:'이동', title:'치진섬 페리 탑승', time:'14:30', place:'구산 → 치진 페리', tip:'전동 자전거 대여는 지양, 도보·차량 위주로 이동(부모님 관절 부담 고려).', map:''},
-  {period:'늦은오후', tag:'관광', title:'치진섬 둘러보기 & 선셋바 일몰', time:'15:00', place:'치진섬', tip:'선셋바 등에서 일몰 감상하며 맥주 한잔.', map:'Cijin Beach Kaohsiung'},
-  {period:'늦은오후', tag:'관광', title:'(선택) 다카오 영국영사관', time:'17:00', place:'打狗英國領事館', tip:'일몰 명소로도 유명. 공사 여부는 현장에서 확인 필요.', map:'Former British Consulate at Takao'},
-  {period:'저녁', tag:'식사', title:'후덕복(만두) 또는 1인 훠궈', time:'19:00', place:'厚德福 또는 훠궈 전문점', tip:'만두·딤섬 노포 후덕복, 또는 개인 화로 1인 훠궈 전문점 중 선택.', map:'厚德福 高雄'},
-  {period:'밤', tag:'쇼핑', title:'노강(라오지앙) 밀크티·딴빙 구매', time:'21:00', place:'老江紅茶牛奶', tip:'밀크티·딴빙 및 누가크래커 선물용 구매. 대량 구매 시 덤 증정 확인.', map:'老江紅茶牛奶 高雄'},
+  {period:'늦은오후', tag:'관광', title:'치진섬 둘러보기 & 선셋바 일몰', time:'15:00', place:'치진섬', tip:'선셋바 등에서 일몰 감상하며 맥주 한잔.', map:'Cijin Beach Kaohsiung', geo:[22.6122,120.2622]},
+  {period:'늦은오후', tag:'관광', title:'(선택) 다카오 영국영사관', time:'17:00', place:'打狗英國領事館', tip:'일몰 명소로도 유명. 공사 여부는 현장에서 확인 필요.', map:'Former British Consulate at Takao', geo:[22.6203,120.2664]},
+  {period:'저녁', tag:'식사', title:'후덕복(만두) 또는 1인 훠궈', time:'19:00', place:'厚德福 또는 훠궈 전문점', tip:'만두·딤섬 노포 후덕복, 또는 개인 화로 1인 훠궈 전문점 중 선택.', map:'厚德福 高雄', geo:[22.6215,120.294]},
+  {period:'밤', tag:'쇼핑', title:'노강(라오지앙) 밀크티·딴빙 구매', time:'21:00', place:'老江紅茶牛奶', tip:'밀크티·딴빙 및 누가크래커 선물용 구매. 대량 구매 시 덤 증정 확인.', map:'老江紅茶牛奶 高雄', geo:[22.6311,120.3021]},
 ]},
 {date:'2026-09-19', label:'9/19(토)', city:'가오슝 → 인천', country:'귀국일', stay:'그리트 인(Greet Inn, 체크아웃)', blocks:[
   {period:'아침', tag:'식사', title:'조식 & 체크아웃', time:'08:00', place:'숙소', tip:'짐은 프런트에 보관 요청.', map:''},
-  {period:'오전', tag:'관광', title:'가오슝 역사박물관 관람', time:'09:00', place:'가오슝 역사박물관', tip:'호텔 도보 15분권, 가벼운 관광.', map:'Kaohsiung Museum of History'},
-  {period:'오전', tag:'쇼핑', title:'85타워 전망 / 기념품 쇼핑', time:'11:00', place:'85타워 인근', tip:'가오슝 랜드마크, 대립백화점 인근.', map:'85 Sky Tower Kaohsiung'},
-  {period:'오후', tag:'식사', title:'★ 점심 - 난펑루러우판(南豐滷肉飯)', time:'12:00', place:'南豐滷肉飯', tip:'가오슝 대표 루러우판(고기 양념 덮밥) 노포. 마지막 식사로 부담 없이 즐기기 좋음.', map:'南豐滷肉飯 高雄'},
-  {period:'오후', tag:'이동', title:'짐 찾고 공항 이동', time:'13:00', place:'그리트 인 → 가오슝 국제공항', tip:'택시 또는 MRT(메이리다오 환승), 약 20~30분.', map:'Kaohsiung International Airport'},
+  {period:'오전', tag:'관광', title:'가오슝 역사박물관 관람', time:'09:00', place:'가오슝 역사박물관', tip:'호텔 도보 15분권, 가벼운 관광.', map:'Kaohsiung Museum of History', geo:[22.6236,120.2871]},
+  {period:'오전', tag:'쇼핑', title:'85타워 전망 / 기념품 쇼핑', time:'11:00', place:'85타워 인근', tip:'가오슝 랜드마크, 대립백화점 인근.', map:'85 Sky Tower Kaohsiung', geo:[22.6119,120.3009]},
+  {period:'오후', tag:'식사', title:'★ 점심 - 난펑루러우판(南豐滷肉飯)', time:'12:00', place:'南豐滷肉飯', tip:'가오슝 대표 루러우판(고기 양념 덮밥) 노포. 마지막 식사로 부담 없이 즐기기 좋음.', map:'南豐滷肉飯 高雄', geo:[22.6183,120.302]},
+  {period:'오후', tag:'이동', title:'짐 찾고 공항 이동', time:'13:00', place:'그리트 인 → 가오슝 국제공항', tip:'택시 또는 MRT(메이리다오 환승), 약 20~30분.', map:'Kaohsiung International Airport', geo:[22.5771,120.3505]},
   {period:'오후', tag:'이동', title:'가오슝 → 인천 출발', time:'16:10', place:'가오슝 국제공항', tip:'국제선 2시간 전 도착 기준. 20:00 인천 도착 예정.', map:''},
 ]},
 ];
 
 const SEED_POOL = [
- {city:'가오슝', title:'루이펑 야시장(瑞豐夜市)', desc:'가오슝 최대 규모 현지인 야시장. 화·목·금·토·일 영업(월·수 휴무). 톈스지파이(닭튀김) 유명.', map:'Ruifeng Night Market Kaohsiung'},
- {city:'가오슝', title:'메이리다오역 光之穹頂(빛의 돔)', desc:'MRT 미려도역, 세계 최대 규모 스테인드글라스 천장 야경.', map:'Formosa Boulevard Station Dome of Light Kaohsiung'},
- {city:'가오슝', title:'치진섬 치허우 포대 & 별빛 터널', desc:'치진 등대까지 이어지는 언덕길, 항구 전망 좋음. 치진섬 방문 시 추가 코스로.', map:'Cijin Fort Kaohsiung'},
- {city:'가오슝', title:'하마싱 철도문화원구', desc:'옛 철도역 개조 전시 공간, 구산 페리 인근 도보 이동.', map:'Hamasen Railway Cultural Park Kaohsiung'},
- {city:'가오슝', title:'아이허 강변 산책 & 시즈완 노을', desc:'항구도시 대표 일몰 명소. 강변 따라 도보 또는 유람선.', map:'Love River Kaohsiung'},
- {city:'가오슝', title:'가오슝 뮤직센터(高雄流行音樂中心)', desc:'아이허 하구의 독특한 건축, 산책하기 좋은 야경 명소.', map:'Kaohsiung Music Center'},
- {city:'가오슝', title:'흥륭거(興隆居)', desc:'전통 조식 노포. 왕만두(탕포)와 샤오빙·딴빙이 유명.', map:'Xinglongju Kaohsiung'},
+ {city:'가오슝', title:'루이펑 야시장(瑞豐夜市)', desc:'가오슝 최대 규모 현지인 야시장. 화·목·금·토·일 영업(월·수 휴무). 톈스지파이(닭튀김) 유명.', map:'Ruifeng Night Market Kaohsiung', geo:[22.6693,120.307]},
+ {city:'가오슝', title:'메이리다오역 光之穹頂(빛의 돔)', desc:'MRT 미려도역, 세계 최대 규모 스테인드글라스 천장 야경.', map:'Formosa Boulevard Station Dome of Light Kaohsiung', geo:[22.6324,120.3013]},
+ {city:'가오슝', title:'치진섬 치허우 포대 & 별빛 터널', desc:'치진 등대까지 이어지는 언덕길, 항구 전망 좋음. 치진섬 방문 시 추가 코스로.', map:'Cijin Fort Kaohsiung', geo:[22.6099,120.2648]},
+ {city:'가오슝', title:'하마싱 철도문화원구', desc:'옛 철도역 개조 전시 공간, 구산 페리 인근 도보 이동.', map:'Hamasen Railway Cultural Park Kaohsiung', geo:[22.6206,120.2789]},
+ {city:'가오슝', title:'아이허 강변 산책 & 시즈완 노을', desc:'항구도시 대표 일몰 명소. 강변 따라 도보 또는 유람선.', map:'Love River Kaohsiung', geo:[22.6259,120.2871]},
+ {city:'가오슝', title:'가오슝 뮤직센터(高雄流行音樂中心)', desc:'아이허 하구의 독특한 건축, 산책하기 좋은 야경 명소.', map:'Kaohsiung Music Center', geo:[22.6122,120.2937]},
+ {city:'가오슝', title:'흥륭거(興隆居)', desc:'전통 조식 노포. 왕만두(탕포)와 샤오빙·딴빙이 유명.', map:'Xinglongju Kaohsiung', geo:[22.6278,120.2962]},
  {city:'가오슝', title:'85도씨 커피(85度C)', desc:'대만 국민 카페 체인. 커피+빵 간단 아침/간식.', map:'85C Bakery Cafe Kaohsiung Qianjin'},
- {city:'가오슝', title:'다관백화점 · 한신백화점', desc:'가오슝 대표 쇼핑몰, 실내 냉방 완비라 더운 낮에 쉬어가기 좋음.', map:'Han Shin Department Store Kaohsiung'},
- {city:'가오슝', title:'야러우전(鴨肉珍)', desc:'오리고기 덮밥·내장탕 노포. 오리고기 수육도 인기.', map:'鴨肉珍 高雄'},
- {city:'가오슝', title:'단단버거(丹丹漢堡)', desc:'대만 남부 대표 패스트푸드 체인. 치킨버거+국수 세트가 인기.', map:'丹丹漢堡 高雄'},
- {city:'가오슝', title:'화달밀크티(樺達奶茶)', desc:'원조 밀크티 전문점. 당도별로 메뉴 이름이 다른 게 특징(미용내차 추천).', map:'樺達奶茶 高雄'},
- {city:'가오슝', title:'정라오파이 목과우유(鄭老牌木瓜牛奶)', desc:'가오슝 대표 파파야우유·생과일주스 전문점.', map:'鄭老牌木瓜牛奶 高雄'},
- {city:'가오슝', title:'천사지파이(天使雞排)', desc:'두툼한 대왕 닭튀김. 육즙 보존 위해 자르지 않고 통째로 제공.', map:'天使雞排 高雄'},
+ {city:'가오슝', title:'다관백화점 · 한신백화점', desc:'가오슝 대표 쇼핑몰, 실내 냉방 완비라 더운 낮에 쉬어가기 좋음.', map:'Han Shin Department Store Kaohsiung', geo:[22.6221,120.2937]},
+ {city:'가오슝', title:'야러우전(鴨肉珍)', desc:'오리고기 덮밥·내장탕 노포. 오리고기 수육도 인기.', map:'鴨肉珍 高雄', geo:[22.6217,120.2845]},
+ {city:'가오슝', title:'단단버거(丹丹漢堡)', desc:'대만 남부 대표 패스트푸드 체인. 치킨버거+국수 세트가 인기.', map:'丹丹漢堡 高雄', geo:[22.6235,120.2665]},
+ {city:'가오슝', title:'화달밀크티(樺達奶茶)', desc:'원조 밀크티 전문점. 당도별로 메뉴 이름이 다른 게 특징(미용내차 추천).', map:'樺達奶茶 高雄', geo:[22.6237,120.2846]},
+ {city:'가오슝', title:'정라오파이 목과우유(鄭老牌木瓜牛奶)', desc:'가오슝 대표 파파야우유·생과일주스 전문점.', map:'鄭老牌木瓜牛奶 高雄', geo:[22.632,120.3006]},
+ {city:'가오슝', title:'천사지파이(天使雞排)', desc:'두툼한 대왕 닭튀김. 육즙 보존 위해 자르지 않고 통째로 제공.', map:'天使雞排 高雄', geo:[22.6693,120.307]},
 ];
 
 const SEED_SHOPPING = [
@@ -808,7 +808,7 @@ const RESTAURANT_ETC = {
 /* =====================================================================
    STATE
 ===================================================================== */
-const STATE_KEY = 'taiwan2026_state_v2';
+const STATE_KEY = 'taiwan2026_state_v3';
 function uid(p){ return p+'_'+Math.random().toString(36).slice(2,9); }
 function esc(s){ return (s===null||s===undefined?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function loadJSON(key, fallback){ try{ const v = JSON.parse(localStorage.getItem(key)); return v==null? fallback : v; }catch(e){ return fallback; } }
@@ -1601,6 +1601,7 @@ function renderTimelineBody(){
           <span class="status-pill ${st.cls}" onclick="event.stopPropagation(); cycleStatus('${day.id}','${b.id}')">${st.label}</span>
           <span class="tl-tag-pill">${esc(b.tag)}</span>
           ${b.map?`<div class="tl-map-btn" onclick="event.stopPropagation(); openMap('${b.map.replace(/'/g,"\\'")}')"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg></div>`:''}
+          ${b.geo?`<div class="tl-map-btn" title="스트리트뷰" onclick="event.stopPropagation(); openStreetView(${b.geo[0]},${b.geo[1]})">🔭</div>`:''}
         </div>
       </div>
       ${b.tip?`<div class="tl-tip">💡 ${esc(b.tip)}</div>`:''}
@@ -1641,6 +1642,7 @@ function renderPool(){
       </div>
       <div style="margin-top:7px; display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
         ${s.map?`<span onclick="openMap('${s.map.replace(/'/g,"\\'")}')" style="font-size:11px; color:var(--brick); font-weight:700; cursor:pointer;">📍 지도 보기</span>`:''}
+        ${s.geo?`<span onclick="openStreetView(${s.geo[0]},${s.geo[1]})" style="font-size:11px; color:var(--brick); font-weight:700; cursor:pointer;">🔭 스트리트뷰</span>`:''}
         ${s.attachUrl?`<span onclick="window.open('${s.attachUrl.replace(/'/g,"\\'")}','_blank')" style="font-size:11px; color:var(--moss); font-weight:700; cursor:pointer;">📄 첨부 PDF 보기</span><span onclick="window.open('${(s.attachFileId?('https://drive.google.com/uc?export=download&id='+s.attachFileId):s.attachUrl).replace(/'/g,"\\'")}','_blank')" style="font-size:11px; color:var(--gold-deep); font-weight:700; cursor:pointer;">⬇️ 다운로드</span>`:''}
         <span onclick="addPoolToTimeline('${s.id}')" style="font-size:11px; color:var(--moss); font-weight:700; cursor:pointer;">＋ 오늘 일정에 추가</span>
       </div>
@@ -1651,6 +1653,7 @@ function renderPool(){
 }
 
 function openMap(query){ window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(query), '_blank'); }
+function openStreetView(lat,lng){ window.open('https://www.google.com/maps/@?api=1&map_action=pano&viewpoint='+lat+','+lng, '_blank'); }
 function jumpToSection(id){
   const el = document.getElementById(id);
   if(!el) return;
