@@ -4,7 +4,7 @@
    (GoogleAppsScript_Code_Taiwan.gs 참고. 배포 전에는 비워두면 되고,
     이 경우 "지금 업로드/불러오기"를 누르면 안내 문구만 뜨고 앱은 정상 동작합니다)
 ===================================================================== */
-const DEFAULT_WEBHOOK_URL = '';
+const DEFAULT_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwbpS-RMq6Ur1_Yi_OZQYZtFQnwkGCr_GyV8u9ckqspN8SRzQ7FeBR8sEuK_dNxSHTsGQ/exec';
 
 // 통화 환산 기준 (1단위당 원화, 2026년 9월 기준 대략치)
 const FX = { TWD: 43, KRW: 1 };
